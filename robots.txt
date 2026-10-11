@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://powerabc1324-jpg.github.io/sitemap.xml

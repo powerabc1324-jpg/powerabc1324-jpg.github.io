@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CropShare – Share only part of your Android screen</title>
+<meta name="description" content="CropShare is an Android app that shares only the rectangle of the screen you pick with other devices on the same Wi-Fi. Viewers need no app: they scan a QR code and watch in a browser. Your script, notes and notifications stay on your screen.">
+<link rel="canonical" href="https://powerabc1324-jpg.github.io/en/">
+<link rel="alternate" hreflang="ko" href="https://powerabc1324-jpg.github.io/">
+<link rel="alternate" hreflang="en" href="https://powerabc1324-jpg.github.io/en/">
+<link rel="alternate" hreflang="x-default" href="https://powerabc1324-jpg.github.io/en/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CropShare">
+<meta property="og:title" content="CropShare – Share only part of your Android screen">
+<meta property="og:description" content="Share the region you pick. Your script and notes stay on your screen. Viewers join from any browser with a QR code.">
+<meta property="og:url" content="https://powerabc1324-jpg.github.io/en/">
+<meta property="og:image" content="https://play-lh.googleusercontent.com/JaQjnuA04xbqCUMXdTrNLc88Jw77u0IylKSnr_8B-3gYcCWm_rBceqtxWwnh7m7Pnu_u5N9kKs2l5VQBUkVF1A=s512">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="https://play-lh.googleusercontent.com/JaQjnuA04xbqCUMXdTrNLc88Jw77u0IylKSnr_8B-3gYcCWm_rBceqtxWwnh7m7Pnu_u5N9kKs2l5VQBUkVF1A=s64">
+<style>
+:root {
+  --bg: #f7f8f6;
+  --surface: #ffffff;
+  --surface-2: #eef2ec;
+  --text: #16201a;
+  --muted: #56625a;
+  --line: #d9e0d9;
+  --accent: #19a35b;
+  --accent-ink: #0d6b3a;
+  --accent-soft: #e2f5ea;
+  --warn-soft: #fff6e0;
+  --radius: 16px;
+  --max: 1040px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1411;
+    --surface: #161d18;
+    --surface-2: #1d2620;
+    --text: #e7ede8;
+    --muted: #9aa89f;
+    --line: #2a352e;
+    --accent: #2fcf78;
+    --accent-ink: #7be3a8;
+    --accent-soft: #163222;
+    --warn-soft: #2b2513;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1411;
+  --surface: #161d18;
+  --surface-2: #1d2620;
+  --text: #e7ede8;
+  --muted: #9aa89f;
+  --line: #2a352e;
+  --accent: #2fcf78;
+  --accent-ink: #7be3a8;
+  --accent-soft: #163222;
+  --warn-soft: #2b2513;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", system-ui, -apple-system, "Segoe UI", sans-serif;
+  line-height: 1.7;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+a { color: var(--accent-ink); }
+img { max-width: 100%; height: auto; display: block; }
+
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 16px; }
+
+/* top bar */
+.top { border-bottom: 1px solid var(--line); background: var(--surface); }
+.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 60px; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 800; color: var(--text); text-decoration: none; }
+.brand img { width: 32px; height: 32px; border-radius: 8px; }
+.lang { font-size: 14px; color: var(--muted); text-decoration: none; border: 1px solid var(--line); padding: 4px 10px; border-radius: 999px; }
+
+/* hero */
+.hero { padding: 56px 0 40px; }
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 40px; align-items: center; }
+.eyebrow { display: inline-block; font-size: 13px; font-weight: 700; color: var(--accent-ink); background: var(--accent-soft); padding: 4px 12px; border-radius: 999px; margin-bottom: 14px; }
+h1 { font-size: clamp(28px, 4.6vw, 44px); line-height: 1.25; margin: 0 0 16px; letter-spacing: -0.02em; }
+.lead { font-size: 18px; color: var(--muted); margin: 0 0 24px; }
+.cta { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.btn { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: #fff; font-weight: 700; padding: 13px 22px; border-radius: 12px; text-decoration: none; }
+.btn:hover { filter: brightness(1.05); }
+.btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--line); }
+.note { font-size: 14px; color: var(--muted); margin-top: 14px; }
+
+.hero-art { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; }
+.hero-art svg { width: 100%; height: auto; display: block; }
+.hero-art figcaption { font-size: 13px; color: var(--muted); text-align: center; margin-top: 8px; }
+
+/* sections */
+section { padding: 48px 0; }
+section.alt { background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+h2 { font-size: clamp(22px, 3.2vw, 30px); line-height: 1.35; margin: 0 0 10px; letter-spacing: -0.01em; }
+.section-lead { color: var(--muted); margin: 0 0 28px; max-width: 720px; }
+h3 { font-size: 18px; margin: 0 0 6px; }
+
+.grid { display: grid; gap: 16px; }
+.grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; }
+section.alt .card { background: var(--bg); }
+.card p { margin: 0; color: var(--muted); }
+.tag { font-size: 12px; font-weight: 700; color: var(--accent-ink); letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 6px; display: block; }
+
+.steps { counter-reset: s; list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.steps li { counter-increment: s; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; }
+.steps li::before { content: counter(s); display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 800; margin-bottom: 10px; }
+.steps p { margin: 0; color: var(--muted); }
+
+.list { margin: 0; padding-left: 20px; }
+.list li { margin: 6px 0; }
+.list strong { color: var(--text); }
+
+.shots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.shots img { border-radius: 12px; border: 1px solid var(--line); background: var(--surface-2); }
+
+/* table */
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+table { width: 100%; border-collapse: collapse; min-width: 640px; font-size: 15px; }
+th, td { text-align: left; padding: 14px 16px; border-bottom: 1px solid var(--line); vertical-align: top; }
+thead th { background: var(--surface-2); font-size: 14px; }
+tbody tr:last-child td { border-bottom: 0; }
+td.us { background: var(--accent-soft); }
+
+/* pricing */
+.plan h3 { margin-bottom: 10px; }
+.plan ul { margin: 0; padding-left: 20px; color: var(--muted); }
+
+/* callout */
+.callout { background: var(--warn-soft); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 22px; }
+.callout ul { margin: 8px 0 0; padding-left: 20px; }
+
+/* faq */
+.faq details { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 0 18px; margin-bottom: 10px; }
+section.alt .faq details { background: var(--bg); }
+.faq summary { cursor: pointer; font-weight: 700; padding: 16px 0; list-style: none; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; float: right; color: var(--muted); font-weight: 400; }
+.faq details[open] summary::after { content: "−"; }
+.faq details p { margin: 0 0 16px; color: var(--muted); }
+
+/* footer */
+footer { padding: 36px 0 48px; color: var(--muted); font-size: 14px; }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 20px; justify-content: space-between; }
+footer a { color: var(--muted); }
+
+@media (max-width: 860px) {
+  .hero .wrap { grid-template-columns: minmax(0, 1fr); }
+  .grid-3, .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 560px) {
+  .hero { padding-top: 36px; }
+  .grid-3, .grid-2, .steps, .shots { grid-template-columns: minmax(0, 1fr); }
+  .lead { font-size: 17px; }
+}
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "CropShare",
+  "alternateName": ["CropShare - Share screen area", "크롭쉐어"],
+  "description": "Android app that shares only a rectangle of the screen you choose with other devices on the same Wi-Fi. Viewers join from a browser with a QR code or address, no app needed, and can point things out with a pen, laser or ping. Devices connect directly with no internet and no server.",
+  "operatingSystem": "Android",
+  "applicationCategory": "UtilitiesApplication",
+  "applicationSubCategory": "Screen sharing",
+  "url": "https://powerabc1324-jpg.github.io/en/",
+  "downloadUrl": "https://play.google.com/store/apps/details?id=com.cropshare.app",
+  "installUrl": "https://play.google.com/store/apps/details?id=com.cropshare.app",
+  "inLanguage": ["en", "ko"],
+  "image": "https://play-lh.googleusercontent.com/JaQjnuA04xbqCUMXdTrNLc88Jw77u0IylKSnr_8B-3gYcCWm_rBceqtxWwnh7m7Pnu_u5N9kKs2l5VQBUkVF1A=s512",
+  "screenshot": [
+    "https://play-lh.googleusercontent.com/fql7p9SKDKd8A--82-Jo-lfLimYGhyvHKgkEVbSKVxu2PZlON66tTyhogh2u-nLf4l2Orfle5MKc4G0JK9EHiw=w1052-h592",
+    "https://play-lh.googleusercontent.com/poU8Iv8vf2hvY6szY6PxrMR3Wb8IrjJxZJRjH0Z6a3Rn8C5RKwPXfGSaxdUpwj8GmOxF_jAb1g9y_Bvd6BtPxg=w1052-h592",
+    "https://play-lh.googleusercontent.com/qLFdF0uNY6q6eyiU_lF_J-S0nxbTQbPtvCKyt4m_n1lj8g-vw8-GHHW0U6qNuT6ssqS31WaSGDkytRGsUh610A=w1052-h592"
+  ],
+  "featureList": [
+    "Share only a rectangle of the screen you choose",
+    "Viewers need no app (join with a QR code or address in a browser)",
+    "Direct connection on the same Wi-Fi, no internet or server",
+    "Six digit code that changes every session",
+    "Viewer pen, laser and ping",
+    "Save three frequently used regions",
+    "Two viewers free, up to 24 with a subscription"
+  ],
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "author": { "@type": "Organization", "name": "감자고구마", "email": "powerabc1324@gmail.com" }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "Can I share only part of my Android screen?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. With CropShare a green box appears on your screen; move it and resize it, and only what is inside that rectangle is shared with other devices. Scripts, notes, notifications and chat windows outside the box are never sent." } },
+    { "@type": "Question", "name": "How is this different from Android's built-in single app sharing?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Android 14 QPR2 / 15 and later can share one whole app. CropShare shares a rectangle you define regardless of app boundaries, so you can show one part of an app and keep another part private. Viewers also watch in a browser without installing anything." } },
+    { "@type": "Question", "name": "Do viewers need to install an app?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. They scan a QR code or type an address and it opens in a browser. Android, iPhone, iPad and laptops all work. Viewers who type the address enter a six digit number." } },
+    { "@type": "Question", "name": "Does it need the internet?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. Devices talk directly over the same Wi-Fi with no server. Everyone must be on the same Wi-Fi or hotspot; other networks cannot connect." } },
+    { "@type": "Question", "name": "How many people can watch at once?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Two viewers at a time for free. A subscription allows up to 24 viewers; with many viewers, constantly moving content such as video or maps may stutter." } },
+    { "@type": "Question", "name": "Is it free?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. The first hour each day has no ads. After that, watch a short ad to share for another hour, with no cap on repeats. A subscription removes the time limit and ads and raises the limit to 24 viewers. You can cancel any time in the Play Store." } },
+    { "@type": "Question", "name": "Can viewers draw or point on the screen?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Viewers can use a pen (neon, marker or highlighter, 3 sizes, 20 colours), a fading laser, and a ping that marks a spot with rings. It shows up on the presenter's screen right away, and the presenter can lock and unlock drawing for everyone at once." } },
+    { "@type": "Question", "name": "Can I share Netflix or other protected apps?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Apps with content protection, such as Netflix, appear black. That is enforced by Android, not by CropShare." } },
+    { "@type": "Question", "name": "It does not connect on my office or school Wi-Fi.",
+      "acceptedAnswer": { "@type": "Answer", "text": "Some office and school networks block device to device connections. You can instead connect the viewing devices to your phone's hotspot. A bookmark to http://cropshare.local:8080 keeps working even when the address changes." } },
+    { "@type": "Question", "name": "Is it secure?",
+      "acceptedAnswer": { "@type": "Answer", "text": "A six digit number that changes every session guards each share, and repeated wrong entries lock a device out for a while. Nothing about your screen is stored anywhere. Traffic within the local network is not encrypted, so do not use it on a network you do not trust." } }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="./">
+      <img src="https://play-lh.googleusercontent.com/JaQjnuA04xbqCUMXdTrNLc88Jw77u0IylKSnr_8B-3gYcCWm_rBceqtxWwnh7m7Pnu_u5N9kKs2l5VQBUkVF1A=s64" alt="CropShare icon" width="32" height="32">
+      CropShare
+    </a>
+    <a class="lang" href="../" hreflang="ko" lang="ko">한국어</a>
+  </div>
+</header>
+
+<main>
+
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">Screen region sharing for Android</span>
+      <h1>Share only the part of your Android screen that matters</h1>
+      <p class="lead">CropShare shares <strong>a rectangle you choose</strong>, not your whole screen, with other devices on the same Wi-Fi. Viewers need no app: they scan a QR code and watch in a browser.</p>
+      <div class="cta">
+        <a class="btn" href="https://play.google.com/store/apps/details?id=com.cropshare.app">Get it on Google Play</a>
+        <a class="btn btn-ghost" href="#how">How it works</a>
+      </div>
+      <p class="note">Two viewers free · No internet needed · No server</p>
+    </div>
+
+    <figure class="hero-art">
+      <svg viewBox="0 0 520 300" role="img" aria-labelledby="art-t">
+        <title id="art-t">Only the slide inside the green box on the presenter's screen is sent to another device</title>
+        <rect x="10" y="40" width="290" height="190" rx="18" style="fill:var(--surface-2);stroke:var(--line)" stroke-width="2"/>
+        <rect x="24" y="54" width="262" height="162" rx="8" style="fill:var(--bg)"/>
+        <rect x="34" y="66" width="70" height="10" rx="3" style="fill:var(--muted)" opacity=".55"/>
+        <rect x="34" y="84" width="62" height="6" rx="3" style="fill:var(--muted)" opacity=".35"/>
+        <rect x="34" y="96" width="66" height="6" rx="3" style="fill:var(--muted)" opacity=".35"/>
+        <rect x="34" y="108" width="54" height="6" rx="3" style="fill:var(--muted)" opacity=".35"/>
+        <rect x="34" y="120" width="64" height="6" rx="3" style="fill:var(--muted)" opacity=".35"/>
+        <rect x="34" y="132" width="48" height="6" rx="3" style="fill:var(--muted)" opacity=".35"/>
+        <text x="34" y="200" font-size="12" style="fill:var(--muted)">Script &amp; notes</text>
+        <rect x="124" y="74" width="150" height="104" rx="6" style="fill:var(--surface)"/>
+        <rect x="138" y="88" width="80" height="10" rx="3" style="fill:var(--text)" opacity=".75"/>
+        <rect x="138" y="108" width="40" height="52" rx="3" style="fill:var(--accent)" opacity=".35"/>
+        <rect x="184" y="124" width="40" height="36" rx="3" style="fill:var(--accent)" opacity=".55"/>
+        <rect x="230" y="114" width="30" height="46" rx="3" style="fill:var(--accent)" opacity=".8"/>
+        <rect x="118" y="68" width="162" height="116" rx="4" fill="none" style="stroke:var(--accent)" stroke-width="3" stroke-dasharray="8 5"/>
+        <rect x="113" y="63" width="10" height="10" style="fill:var(--accent)"/>
+        <rect x="275" y="63" width="10" height="10" style="fill:var(--accent)"/>
+        <rect x="113" y="179" width="10" height="10" style="fill:var(--accent)"/>
+        <rect x="275" y="179" width="10" height="10" style="fill:var(--accent)"/>
+        <text x="140" y="205" font-size="12" style="fill:var(--accent-ink)" font-weight="700">Only this is shared</text>
+        <path d="M310 135 H350" style="stroke:var(--accent)" stroke-width="3" fill="none"/>
+        <path d="M346 127 L358 135 L346 143 Z" style="fill:var(--accent)"/>
+        <text x="306" y="122" font-size="11" style="fill:var(--muted)">Same Wi-Fi</text>
+        <rect x="368" y="70" width="142" height="104" rx="10" style="fill:var(--surface-2);stroke:var(--line)" stroke-width="2"/>
+        <rect x="376" y="78" width="126" height="88" rx="4" style="fill:var(--surface)"/>
+        <rect x="386" y="88" width="66" height="8" rx="3" style="fill:var(--text)" opacity=".75"/>
+        <rect x="386" y="104" width="32" height="48" rx="3" style="fill:var(--accent)" opacity=".35"/>
+        <rect x="424" y="118" width="32" height="34" rx="3" style="fill:var(--accent)" opacity=".55"/>
+        <rect x="462" y="110" width="26" height="42" rx="3" style="fill:var(--accent)" opacity=".8"/>
+        <path d="M400 140 q20 -24 46 -6" fill="none" stroke="#ff4fa3" stroke-width="3" stroke-linecap="round"/>
+        <text x="386" y="196" font-size="12" style="fill:var(--muted)">Viewer (browser)</text>
+      </svg>
+      <figcaption>Your script stays with you; viewers see only the slide</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="alt" id="uses">
+  <div class="wrap">
+    <h2>What it is for</h2>
+    <p class="section-lead">Full screen sharing shows too much, and sharing a single app is too coarse. CropShare sends exactly the rectangle you need.</p>
+    <div class="grid grid-3">
+      <div class="card">
+        <span class="tag">Presenting</span>
+        <h3>Slides, not your script</h3>
+        <p>Keep your script on one side of the screen and share only the slide area. Your audience sees the slides, not your notes.</p>
+      </div>
+      <div class="card">
+        <span class="tag">Teaching</span>
+        <h3>Keep the answer key private</h3>
+        <p>Keep the answer key on your screen and share only the working area. Nobody sees the answers before you get there.</p>
+      </div>
+      <div class="card">
+        <span class="tag">Watching together</span>
+        <h3>Just the game or video</h3>
+        <p>Share a game or a video with a group. Chat windows, notifications and personal details stay outside the region, so they are never sent.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <h2>How to share part of your Android screen</h2>
+    <p class="section-lead">Setup takes about a minute. Touches pass straight through the box, so you keep using the app underneath, and you can move or resize the box at any time while sharing.</p>
+    <ol class="steps">
+      <li><h3>Set up</h3><p>Start sharing setup. A green box appears on your screen.</p></li>
+      <li><h3>Pick the region</h3><p>Move the box and drag any of the four corners to resize it.</p></li>
+      <li><h3>Start sharing</h3><p>A QR code and a six digit number appear.</p></li>
+      <li><h3>Join</h3><p>Viewers scan the QR code and they are in. If they type the address instead, they enter the six digit number.</p></li>
+    </ol>
+    <div class="shots" style="margin-top:24px">
+      <img src="https://play-lh.googleusercontent.com/fql7p9SKDKd8A--82-Jo-lfLimYGhyvHKgkEVbSKVxu2PZlON66tTyhogh2u-nLf4l2Orfle5MKc4G0JK9EHiw=w1052-h592" alt="CropShare screenshot 1" loading="lazy" width="526" height="296">
+      <img src="https://play-lh.googleusercontent.com/poU8Iv8vf2hvY6szY6PxrMR3Wb8IrjJxZJRjH0Z6a3Rn8C5RKwPXfGSaxdUpwj8GmOxF_jAb1g9y_Bvd6BtPxg=w1052-h592" alt="CropShare screenshot 2" loading="lazy" width="526" height="296">
+      <img src="https://play-lh.googleusercontent.com/qLFdF0uNY6q6eyiU_lF_J-S0nxbTQbPtvCKyt4m_n1lj8g-vw8-GHHW0U6qNuT6ssqS31WaSGDkytRGsUh610A=w1052-h592" alt="CropShare screenshot 3" loading="lazy" width="526" height="296">
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="features">
+  <div class="wrap">
+    <h2>Features</h2>
+    <p class="section-lead">Viewers can point things out, not just watch.</p>
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>What you control</h3>
+        <ul class="list">
+          <li><strong>Drawing lock</strong> – stop and resume viewer pens and lasers at once</li>
+          <li><strong>Pause</strong> – viewers keep the last frame while you look at something else</li>
+          <li><strong>Reset views</strong> – put every viewer's zoom and rotation back in one tap</li>
+          <li><strong>Save slots</strong> – keep three regions you use often and switch in one tap</li>
+          <li><strong>Enter numbers</strong> – set position and size in pixels, lock the ratio</li>
+          <li><strong>Hide or move the bar</strong> – hide the control bar or place it in any of 12 spots</li>
+          <li><strong>Full lock</strong> – lock every button before handing the device to someone</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>What viewers can do</h3>
+        <ul class="list">
+          <li><strong>Pen</strong> – neon, marker or highlighter · 3 sizes · 20 colours</li>
+          <li><strong>Laser</strong> – a mark that fades away</li>
+          <li><strong>Ping</strong> – tap once and rings mark the spot</li>
+          <li><strong>Themes</strong> – 10 looks, set by the presenter or by each viewer</li>
+        </ul>
+        <p style="margin-top:12px">It all shows up on the presenter's screen right away.</p>
+        <h3 style="margin-top:20px">How it behaves</h3>
+        <ul class="list">
+          <li>Text is sent sharp, motion is sent smooth</li>
+          <li>On a slow connection it sends lighter frames while the screen moves, then the full picture once it stops</li>
+          <li>The box keeps its place when you rotate the screen</li>
+          <li>If Wi-Fi changes, the address and QR code update on their own</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="compare">
+  <div class="wrap">
+    <h2>Compared with other options</h2>
+    <p class="section-lead">There are several ways to show part of an Android screen. Pick the one that fits your situation.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Option</th><th>What is shared</th><th>Viewers use</th><th>Requires</th><th>Best for</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="us"><strong>CropShare</strong></td>
+            <td class="us">A rectangle you choose</td>
+            <td class="us">Any browser (QR code), can draw and point</td>
+            <td class="us">Same Wi-Fi or hotspot</td>
+            <td class="us">Presenting, teaching, watching together in the same room</td>
+          </tr>
+          <tr>
+            <td>Android built-in single app sharing</td>
+            <td>One whole app</td>
+            <td>A sharing app such as Meet or Discord</td>
+            <td>Android 14 QPR2 / 15 or later</td>
+            <td>Showing one whole app in a remote meeting</td>
+          </tr>
+          <tr>
+            <td>scrcpy (desktop program)</td>
+            <td>A region set with its crop option</td>
+            <td>The connected computer</td>
+            <td>A computer, USB debugging</td>
+            <td>Mirroring or recording on a PC, streaming via OBS</td>
+          </tr>
+          <tr>
+            <td>Mirror, then crop in OBS</td>
+            <td>The region cropped in OBS</td>
+            <td>Stream viewers</td>
+            <td>A computer, a mirroring tool, OBS</td>
+            <td>Live streaming over the internet</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="pricing">
+  <div class="wrap">
+    <h2>Pricing</h2>
+    <div class="grid grid-2">
+      <div class="card plan">
+        <h3>Free</h3>
+        <ul>
+          <li>Two viewers at a time</li>
+          <li>The first hour each day has no ads</li>
+          <li>After that, watch a short ad to share for another hour, no cap on repeats</li>
+        </ul>
+      </div>
+      <div class="card plan">
+        <h3>Subscription</h3>
+        <ul>
+          <li>Up to 24 viewers at a time (with many viewers, constantly moving content may stutter)</li>
+          <li>No time limit</li>
+          <li>No ads</li>
+          <li>Cancel any time in the Play Store</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="notes">
+  <div class="wrap">
+    <h2>Good to know</h2>
+    <div class="callout">
+      <ul>
+        <li>Everyone must be on the <strong>same Wi-Fi</strong>. Other networks cannot connect.</li>
+        <li>Some office and school networks block device to device connections.</li>
+        <li>Apps with content protection, such as Netflix, appear black. That is enforced by the system, not by this app.</li>
+        <li>Picture quality and responsiveness depend on your Wi-Fi: the router, signal strength and how many devices are using it.</li>
+        <li>Traffic is not encrypted within the local network. Do not use it on a network you do not trust.</li>
+        <li>Permissions: <strong>Screen recording</strong> (captures the region you chose, only after system consent) and <strong>Display over other apps</strong> (shows the region box).</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="faq">
+  <div class="wrap">
+    <h2>FAQ</h2>
+    <div class="faq">
+      <details open><summary>Can I share only part of my Android screen?</summary>
+        <p>Yes. With CropShare a green box appears on your screen; move it and resize it, and only what is inside that rectangle is shared with other devices. Scripts, notes, notifications and chat windows outside the box are never sent.</p></details>
+      <details><summary>How is this different from Android's built-in single app sharing?</summary>
+        <p>Android 14 QPR2 / 15 and later can share one whole app. CropShare shares a rectangle you define regardless of app boundaries, so you can show one part of an app and keep another part private. Viewers also watch in a browser without installing anything.</p></details>
+      <details><summary>Do viewers need to install an app?</summary>
+        <p>No. They scan a QR code or type an address and it opens in a browser. Android, iPhone, iPad and laptops all work. Viewers who type the address enter a six digit number.</p></details>
+      <details><summary>Does it need the internet?</summary>
+        <p>No. Devices talk directly over the same Wi-Fi with no server. Everyone must be on the same Wi-Fi or hotspot; other networks cannot connect.</p></details>
+      <details><summary>How many people can watch at once?</summary>
+        <p>Two viewers at a time for free. A subscription allows up to 24 viewers; with many viewers, constantly moving content such as video or maps may stutter.</p></details>
+      <details><summary>Is it free?</summary>
+        <p>Yes. The first hour each day has no ads. After that, watch a short ad to share for another hour, with no cap on repeats. A subscription removes the time limit and ads and raises the limit to 24 viewers. You can cancel any time in the Play Store.</p></details>
+      <details><summary>Can viewers draw or point on the screen?</summary>
+        <p>Yes. Viewers can use a pen (neon, marker or highlighter, 3 sizes, 20 colours), a fading laser, and a ping that marks a spot with rings. It shows up on the presenter's screen right away, and the presenter can lock and unlock drawing for everyone at once.</p></details>
+      <details><summary>Can I share Netflix or other protected apps?</summary>
+        <p>Apps with content protection, such as Netflix, appear black. That is enforced by Android, not by CropShare.</p></details>
+      <details><summary>It does not connect on my office or school Wi-Fi.</summary>
+        <p>Some office and school networks block device to device connections. You can instead connect the viewing devices to your phone's hotspot. A bookmark to http://cropshare.local:8080 keeps working even when the address changes.</p></details>
+      <details><summary>Is it secure?</summary>
+        <p>A six digit number that changes every session guards each share, and repeated wrong entries lock a device out for a while. Nothing about your screen is stored anywhere. Traffic within the local network is not encrypted, so do not use it on a network you do not trust.</p></details>
+    </div>
+    <div class="cta" style="margin-top:28px">
+      <a class="btn" href="https://play.google.com/store/apps/details?id=com.cropshare.app">Get CropShare on Google Play</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 CropShare</span>
+    <span>
+      <a href="mailto:powerabc1324@gmail.com">Contact powerabc1324@gmail.com</a> ·
+      <a href="https://powerabc1324-jpg.github.io/cropshare-policy/privacy-policy.html">Privacy policy</a> ·
+      <a href="../" hreflang="ko" lang="ko">한국어</a>
+    </span>
+  </div>
+</footer>
+
+</body>
+</html>
